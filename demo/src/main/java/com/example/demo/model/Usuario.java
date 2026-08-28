@@ -26,7 +26,7 @@ public class Usuario {
     @NotNull(message = "A data de nascimento é obrigatótia")
     @Past(message = "A data de nascimento não pode ser uma data futura ")
     //@JsonFormat(pattern = "yyyy-MM-dd"): Garante que o Jackson consiga converter a String do JSON para a data em Java corretamente.
-    @JsonFormat(pattern = "yyyy-mm-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate dt_nasc;
 
     @NotBlank(message = "A senha é obrigatória")
