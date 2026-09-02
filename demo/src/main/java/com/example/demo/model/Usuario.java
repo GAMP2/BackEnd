@@ -7,11 +7,13 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-
+@Entity
 @Data
 @NoArgsConstructor
 public class Usuario {
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     @NotBlank(message = "O nome não pode estar em branco")
     String nome;
     //@notblank: Garante que o campo seja vazio
