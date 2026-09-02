@@ -48,6 +48,27 @@ public class UsuarioController {
             }
         }//Caso o loop acabe sem encontrar nenhum usuário compatível, retorna o código de Status 404 Not Found
         return ResponseEntity.notFound().build();
+    }// PATCH - Atualização parcial (ex: http://localhost:8080/usuários/1)
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<Usuario> atualizarParcial(@PathVariable Long id, @RequestBody Usuario dados) {
+        for (Usuario u : us) {
+            if (u.getId().equals(id)) {
+
+                // Só altera o nome se um novo nome for enviado no JSON
+                if (dados.getNome() != null) {
+                    u.setNome(dados.getNome());
+                }
+
+                // Só altera o e-mail se um novo e-mail for enviado no JSON
+                if (dados.getEmail() != null) {
+                    u.setEmail(dados.getEmail());
+                }
+
+                return ResponseEntity.ok(u); // Devolve o usuário com os dados atualizados (Status 200)
+            }
+        }
+        return ResponseEntity.notFound().build(); // Se não achar o ID (Status 404)
     }
 
     //Usa a função removeIf para procurar na lista us o usuário que possui aquele id e removê-lo.
