@@ -1,8 +1,9 @@
 
 <div align="center">
 
-<img src="https://github.com/user-attachments/assets/e2e13081-18bf-4f53-91a0-5123ab04f7db" />
-" alt="Logo Sender" width="250">
+<img width="250" height="250" alt="SenaMora (1)" src="https://github.com/user-attachments/assets/cfb2ab5f-4f3f-4ca2-806c-97d09cd95205" />
+
+
 
 <h1>SENDER</h1>
 
