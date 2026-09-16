@@ -1,10 +1,15 @@
 package com.example.demo.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 
 import java.time.LocalDate;
 @Entity
@@ -12,14 +17,14 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class Usuario {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    // TODO @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @NotBlank(message = "O nome não pode estar em branco")
     String nome;
     //@notblank: Garante que o campo seja vazio
     @NotBlank(message = "O e-mail é obrigatório")
     @Email(message = "O email deve ser válido")
-    private String Email;
+    private String email;
 
     @Min(value = 0, message = "A idade não pode ser negativa")
     private int idade;
@@ -29,7 +34,7 @@ public class Usuario {
     @Past(message = "A data de nascimento não pode ser uma data futura ")
     //@JsonFormat(pattern = "yyyy-MM-dd"): Garante que o Jackson consiga converter a String do JSON para a data em Java corretamente.
     @JsonFormat(pattern = "yyyy-MM-dd")
-    private LocalDate dt_nasc;
+    private LocalDate dtNasc;
 
     @NotBlank(message = "A senha é obrigatória")
     @Size(min = 8, max = 20, message = "A senha deve ter entre 8 e 20 caracteres")
@@ -46,4 +51,5 @@ public class Usuario {
             message = "A senha deve conter pelo menos uma letra maiúscula, uma minúscula, um número e um caractere especial"
     )
     private String senha;
+
 }

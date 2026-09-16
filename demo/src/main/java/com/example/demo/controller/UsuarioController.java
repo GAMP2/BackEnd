@@ -15,71 +15,83 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/usuários")
+@RequestMapping("usuarios")
 public class UsuarioController {
-//private final UsuarioController usuarioController;
-//
-//    public UsuarioController(UsuarioController usuarioController) {
-//        this.usuarioController = usuarioController;
-//    }
-
-    List<Usuario> us = new ArrayList<>();
+    List<Usuario> usuarios = new ArrayList<>();
+    private long nextId = 1L;
 
     @PostMapping
-    ResponseEntity<String> criarUsuario(@Valid @RequestBody Usuario usuario) {
-        us.add(usuario);
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body("Usuário salvo no JSON com sucesso!");
+    public String criarUsuarios(@RequestBody Usuario usuario) {
+        usuario.setId(nextId++);
+        usuarios.add(usuario);
+        return "Usuario criado com sucesso!";
     }
 
-    // HTTP Status: 200 OK
     @GetMapping
-    public ResponseEntity<List<Usuario>> listarTodas() {
-        return ResponseEntity.ok(us);
+    public List<Usuario> listarUsuarios() {
+        return usuarios;
 
     }
 
-    @GetMapping("/{id}")
-    ResponseEntity<Usuario> buscarPorId(@PathVariable long id) {
-        for (Usuario u : us) {
-            //Se achar um usuário com o mesmo id fornecido, retorna o usuário encontrado com Status 200 OK
+    @DeleteMapping("/{id}")
+    public String deletarUsuario(@PathVariable long id) {
+        for (Usuario u : usuarios) {
             if (u.getId().equals(id)) {
-                return ResponseEntity.ok(u);
+                usuarios.remove(u);
+                return "Usuário removido com sucesso";
             }
-        }//Caso o loop acabe sem encontrar nenhum usuário compatível, retorna o código de Status 404 Not Found
-        return ResponseEntity.notFound().build();
-    }// PATCH - Atualização parcial (ex: http://localhost:8080/usuários/1)
+        }
+        return "Usuário não encontrado";
+    }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<Usuario> atualizarParcial(@PathVariable Long id, @RequestBody Usuario dados) {
-        for (Usuario u : us) {
+    public String alterarUsuario(@PathVariable long id, @RequestBody Usuario dados) {
+        for (Usuario u : usuarios)
             if (u.getId().equals(id)) {
-
-                // Só altera o nome se um novo nome for enviado no JSON
-                if (dados.getNome() != null) {
+                if (u.getNome() != null) {
                     u.setNome(dados.getNome());
+                    return "Nome redefinido com sucesso!";
+//email,idade,datnsc,senha
                 }
-
-                // Só altera o e-mail se um novo e-mail for enviado no JSON
-                if (dados.getEmail() != null) {
+                if (u.getEmail() != null) {
                     u.setEmail(dados.getEmail());
+                    return "Email redefinido com sucesso!";
                 }
-
-                return ResponseEntity.ok(u); // Devolve o usuário com os dados atualizados (Status 200)
+                if (u.getDtNasc() != null) {
+                    u.setDtNasc(dados.getDtNasc());
+                    return "Data de nascimento redefinida com sucesso";
+                }
+                if (u.getIdade() != 0) {
+                    u.setIdade(dados.getIdade());
+                    return "Idade redefinida com sucesso";
+                }
+                if (u.getSenha() != null) {
+                    u.setSenha(dados.getSenha());
+                    return "Senha redefinida com sucesso";
+                }
+                return "Usuario nao encontrado";
             }
-        }
-        return ResponseEntity.notFound().build(); // Se não achar o ID (Status 404)
+        return "";
     }
+            @PutMapping("/{id}")
+            public String atualizarUsuario ( @PathVariable long id, @RequestBody Usuario dados){
 
-    //Usa a função removeIf para procurar na lista us o usuário que possui aquele id e removê-lo.
-    // Retorna true se achou e removeu, ou false se não encontrou.
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletar(@PathVariable Long id) {
-        boolean removido = us.removeIf(u -> u.getId().equals(id));
-        if (removido) {
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.notFound().build();
-    }
-}
+                for (Usuario usuario : usuarios) {
+
+                    if (usuario.getId().equals(id)) {
+
+                        usuario.setNome(dados.getNome());
+                        usuario.setEmail(dados.getEmail());
+                        usuario.setIdade(dados.getIdade());
+                        usuario.setDtNasc(dados.getDtNasc());
+                        usuario.setSenha(dados.getSenha());
+
+                        return "Usuário atualizado com sucesso!";
+                    }return "Usuário nâo encontrado";
+            }
+
+                return "";
+            }}
+
+
 
