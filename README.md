@@ -1,7 +1,7 @@
 
 <div align="center">
 
-<img src="h<img width="275" height="280" alt="sender2" src="https://github.com/user-attachments/assets/e2e13081-18bf-4f53-91a0-5123ab04f7db" />
+<img src="https://github.com/user-attachments/assets/e2e13081-18bf-4f53-91a0-5123ab04f7db" />
 " alt="Logo Sender" width="250">
 
 <h1>SENDER</h1>
