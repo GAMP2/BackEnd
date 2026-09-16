@@ -1,7 +1,7 @@
 # BackEnd
 <div align="center">
 
-<img src="logo.png" alt="Logo Sender" width="250">
+<img src="https://github.com/GAMP2/BackEnd/blob/main/.idea/sender2.png" alt="Logo Sender" width="250">
 
 <h1>SENDER</h1>
 
