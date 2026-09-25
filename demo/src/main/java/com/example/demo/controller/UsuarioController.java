@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityReturnValueHandler;
 
 import javax.swing.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -38,6 +39,7 @@ public class UsuarioController {
         for (Usuario u : usuarios) {
             if (u.getId().equals(id)) {
                 usuarios.remove(u);
+                u.setDtDeletar(LocalDate.now());
                 return "Usuário removido com sucesso";
             }
         }
@@ -73,25 +75,28 @@ public class UsuarioController {
             }
         return "";
     }
-            @PutMapping("/{id}")
-            public String atualizarUsuario ( @PathVariable long id, @RequestBody Usuario dados){
 
-                for (Usuario usuario : usuarios) {
+    @PutMapping("/{id}")
+    public String atualizarUsuario(@PathVariable long id, @RequestBody Usuario dados) {
+        for (Usuario usuario : usuarios) {
 
-                    if (usuario.getId().equals(id)) {
+            if (usuario.getId().equals(id)) {
 
-                        usuario.setNome(dados.getNome());
-                        usuario.setEmail(dados.getEmail());
-                        usuario.setIdade(dados.getIdade());
-                        usuario.setDtNasc(dados.getDtNasc());
-                        usuario.setSenha(dados.getSenha());
+                usuario.setNome(dados.getNome());
+                usuario.setEmail(dados.getEmail());
+                usuario.setIdade(dados.getIdade());
+                usuario.setDtNasc(dados.getDtNasc());
+                usuario.setSenha(dados.getSenha());
+                usuario.setDtAtualizacao(LocalDate.now());
 
-                        return "Usuário atualizado com sucesso!";
-                    }return "Usuário nâo encontrado";
+                return "Usuário atualizado com sucesso!";
             }
+            return "Usuário nâo encontrado";
+        }
 
-                return "";
-            }}
+        return "";
+    }
+}
 
 
 

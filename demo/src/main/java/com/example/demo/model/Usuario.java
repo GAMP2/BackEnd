@@ -1,10 +1,7 @@
 package com.example.demo.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,13 +9,23 @@ import lombok.NoArgsConstructor;
 
 
 import java.time.LocalDate;
+
 @Entity
-@Data
+//Nome Da tabela no banco de dados
+@Table(name = "Usuario")
+@Data // todo Isso gera o getters e os Setters de tudo
 @NoArgsConstructor
 public class Usuario {
+    //Um usuário tem apenas um perfil
+    @OneToOne(mappedBy = usuario)
+    private Perfil perfil;
+
+
     @Id
-    // TODO @GeneratedValue(strategy = GenerationType.IDENTITY)
+    //Cria um valor aleatório
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @NotBlank(message = "O nome não pode estar em branco")
     String nome;
     //@notblank: Garante que o campo seja vazio
@@ -36,6 +43,10 @@ public class Usuario {
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate dtNasc;
 
+    @NotNull(message = "A data de criacao é obrigatória")
+    @Past(message = "A data de criação não pode ser futura")
+    private LocalDate.now dataCriacao;
+
     @NotBlank(message = "A senha é obrigatória")
     @Size(min = 8, max = 20, message = "A senha deve ter entre 8 e 20 caracteres")
     //@Pattern(regexp = "..."): Aplica uma Expressão Regular (Regex) para garantir a força da senha:
@@ -51,5 +62,35 @@ public class Usuario {
             message = "A senha deve conter pelo menos uma letra maiúscula, uma minúscula, um número e um caractere especial"
     )
     private String senha;
+
+    private  enum objetivo{
+        NAMORAR,
+        FICAR,
+        AMIZADE
+    }
+    private enum cargo{
+        PROFESSOR,
+        ALUNO,
+        FUNCIONÁRIO
+    }
+    private enum genero{
+        MASCULINO,
+        FEMININO
+    }
+    @Min(value = 16, message = "A idade não pode ser menor que 16 anos!")
+    private int preferenciaMin;
+
+    private int preferenciaMax;
+
+    private boolean verificado;
+
+    private LocalDate dtAtualizacao;
+
+    private LocalDate dtDeletar;
+
+    @NotBlank(message = "Sua escolha é obrigatória")
+    private boolean ocultoFeed;
+
+
 
 }
