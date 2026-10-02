@@ -17,7 +17,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class Usuario {
     //Um usuário tem apenas um perfil
-    @OneToOne(mappedBy = usuario)
+    @OneToOne(mappedBy = "usuario")
     private Perfil perfil;
 
 
@@ -45,7 +45,7 @@ public class Usuario {
 
     @NotNull(message = "A data de criacao é obrigatória")
     @Past(message = "A data de criação não pode ser futura")
-    private LocalDate.now dataCriacao;
+    private LocalDate dataCriacao;
 
     @NotBlank(message = "A senha é obrigatória")
     @Size(min = 8, max = 20, message = "A senha deve ter entre 8 e 20 caracteres")
@@ -63,7 +63,7 @@ public class Usuario {
     )
     private String senha;
 
-    private  enum objetivo{
+    private enum objetivo{
         NAMORAR,
         FICAR,
         AMIZADE
