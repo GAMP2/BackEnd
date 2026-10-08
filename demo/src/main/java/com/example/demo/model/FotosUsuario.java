@@ -6,4 +6,5 @@ public class FotosUsuario {
     @Id
     private long id;
     private long idUsuario;
+    private String fotoUrl;
 }

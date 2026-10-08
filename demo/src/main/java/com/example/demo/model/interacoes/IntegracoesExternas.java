@@ -1,4 +1,4 @@
-package com.example.demo.service;
+package com.example.demo.model.interacoes;
 
 import com.example.demo.model.Usuario;
 import jakarta.persistence.GeneratedValue;

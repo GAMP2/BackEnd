@@ -1,9 +1,12 @@
 package com.example.demo.model;
 
+import com.example.demo.model.enums.Cargo;
+import com.example.demo.model.enums.Genero;
+import com.example.demo.model.enums.Objetivo;
+import com.example.demo.model.enums.StatusUsuario;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -12,13 +15,13 @@ import java.time.LocalDate;
 
 @Entity
 //Nome Da tabela no banco de dados
-@Table(name = "Usuario")
 @Data // todo Isso gera o getters e os Setters de tudo
 @NoArgsConstructor
+@Table(name = "Usuario")
 public class Usuario {
     //Um usuário tem apenas um perfil
     @OneToOne(mappedBy = "usuario")
-    private Perfil perfil;
+
 
 
     @Id
@@ -61,22 +64,12 @@ public class Usuario {
             regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=!]).*$",
             message = "A senha deve conter pelo menos uma letra maiúscula, uma minúscula, um número e um caractere especial"
     )
-    private String senha;
+    private String senhaHash;
 
-    private enum objetivo{
-        NAMORAR,
-        FICAR,
-        AMIZADE
-    }
-    private enum cargo{
-        PROFESSOR,
-        ALUNO,
-        FUNCIONÁRIO
-    }
-    private enum genero{
-        MASCULINO,
-        FEMININO
-    }
+    private String biografia;
+
+    public String telefone;
+
     @Min(value = 16, message = "A idade não pode ser menor que 16 anos!")
     private int preferenciaMin;
 
@@ -88,8 +81,27 @@ public class Usuario {
 
     private LocalDate dtDeletar;
 
-    @NotBlank(message = "Sua escolha é obrigatória")
     private boolean ocultoFeed;
+
+///////////////////////ENUMS////////////////////////////////////////////////////////////////////////////////
+    //Renomeia o enum como palavra para o banco de dados
+    @Enumerated(EnumType.STRING)
+    private Objetivo objetivo;
+
+    @Enumerated(EnumType.STRING)
+    private Genero genero;
+
+    @Enumerated(EnumType.STRING)
+    private Cargo cargo;
+
+    @Enumerated(EnumType.STRING)
+    private StatusUsuario status;
+    private String motivoBloqueio;
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
 
 
 

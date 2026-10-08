@@ -7,96 +7,37 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityReturnValueHandler;
 
-import javax.swing.*;
-import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
-@RequestMapping("usuarios")
+@RequestMapping("/usuarios")
+
 public class UsuarioController {
-    List<Usuario> usuarios = new ArrayList<>();
-    private long nextId = 1L;
+
+    @Autowired
+    private UsuarioService usuarioService;
 
     @PostMapping
-    public String criarUsuarios(@RequestBody Usuario usuario) {
-        usuario.setId(nextId++);
-        usuarios.add(usuario);
-        return "Usuario criado com sucesso!";
+    public ResponseEntity<Usuario> criar(@Valid @RequestBody Usuario usuario) {
+        Usuario novoUsuario = usuarioService.salvar(usuario);
+        return ResponseEntity.status(HttpStatus.CREATED).body(novoUsuario);
     }
 
     @GetMapping
-    public List<Usuario> listarUsuarios() {
-        return usuarios;
+    public ResponseEntity<List<Usuario>> listar() {
+        return ResponseEntity.ok(usuarioService.listarTodos());
+    }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<Usuario> buscarPorId(@PathVariable String id) {
+        return ResponseEntity.ok(usuarioService.buscarPorId(id));
     }
 
     @DeleteMapping("/{id}")
-    public String deletarUsuario(@PathVariable long id) {
-        for (Usuario u : usuarios) {
-            if (u.getId().equals(id)) {
-                usuarios.remove(u);
-                u.setDtDeletar(LocalDate.now());
-                return "Usuário removido com sucesso";
-            }
-        }
-        return "Usuário não encontrado";
+    public ResponseEntity<String> deletar(@PathVariable String id) {
+        usuarioService.bloquearUsuario(id, "Desativado a pedido do utilizador");
+        return ResponseEntity.ok("Usuário desativado com sucesso!");
     }
-
-    @PatchMapping("/{id}")
-    public String alterarUsuario(@PathVariable long id, @RequestBody Usuario dados) {
-        for (Usuario u : usuarios)
-            if (u.getId().equals(id)) {
-                if (u.getNome() != null) {
-                    u.setNome(dados.getNome());
-                    return "Nome redefinido com sucesso!";
-//email,idade,datnsc,senha
-                }
-                if (u.getEmail() != null) {
-                    u.setEmail(dados.getEmail());
-                    return "Email redefinido com sucesso!";
-                }
-                if (u.getDtNasc() != null) {
-                    u.setDtNasc(dados.getDtNasc());
-                    return "Data de nascimento redefinida com sucesso";
-                }
-                if (u.getIdade() != 0) {
-                    u.setIdade(dados.getIdade());
-                    return "Idade redefinida com sucesso";
-                }
-                if (u.getSenha() != null) {
-                    u.setSenha(dados.getSenha());
-                    return "Senha redefinida com sucesso";
-                }
-                return "Usuario nao encontrado";
-            }
-        return "";
-    }
-
-    @PutMapping("/{id}")
-    public String atualizarUsuario(@PathVariable long id, @RequestBody Usuario dados) {
-        for (Usuario usuario : usuarios) {
-
-            if (usuario.getId().equals(id)) {
-
-                usuario.setNome(dados.getNome());
-                usuario.setEmail(dados.getEmail());
-                usuario.setIdade(dados.getIdade());
-                usuario.setDtNasc(dados.getDtNasc());
-                usuario.setSenha(dados.getSenha());
-                usuario.setDtAtualizacao(LocalDate.now());
-
-                return "Usuário atualizado com sucesso!";
-            }
-            return "Usuário nâo encontrado";
-        }
-
-        return "";
-    }
+    //Falta o atualizar
 }
-
-
-

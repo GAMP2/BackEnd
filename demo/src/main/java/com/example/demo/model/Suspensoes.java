@@ -1,6 +1,5 @@
-package com.example.demo.service;
+package com.example.demo.model;
 
-import com.example.demo.model.Usuario;
 import jakarta.persistence.GeneratedValue;
 import org.springframework.data.annotation.Id;
 
