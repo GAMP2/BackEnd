@@ -39,5 +39,8 @@ public class UsuarioController {
         usuarioService.bloquearUsuario(id, "Desativado a pedido do utilizador");
         return ResponseEntity.ok("Usuário desativado com sucesso!");
     }
-    //Falta o atualizar
-}
+    @PatchMapping("/{id}")
+    public ResponseEntity<Usuario> atualizarParcial(@PathVariable String id, @RequestBody Usuario dadosNovos) {
+        Usuario usuarioAtualizado = usuarioService.atualizarParcial(id, dadosNovos);
+        return ResponseEntity.ok(usuarioAtualizado);
+    }}

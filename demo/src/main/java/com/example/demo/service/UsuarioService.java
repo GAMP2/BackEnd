@@ -32,4 +32,22 @@ public class UsuarioService {
         usuario.setMotivoBloqueio(motivo);
         return usuarioRepository.save(usuario);
     }
+    public Usuario atualizarParcial(String id, Usuario dadosNovos) {
+        Usuario usuarioExistente = buscarPorId(id);
+        if (dadosNovos.getNome() != null) {
+            usuarioExistente.setNome(dadosNovos.getNome());
+        }
+        if (dadosNovos.getEmail() != null) {
+            if (usuarioRepository.existsByEmail(dadosNovos.getEmail())) {
+                throw new RuntimeException("Este novo e-mail já está em uso!");
+            }
+            usuarioExistente.setEmail(dadosNovos.getEmail());
+        }
+        // Só atualiza a senha se tiver sido enviada
+        if (dadosNovos.getSenhaHash() != null) {
+            usuarioExistente.setSenhaHash(dadosNovos.getSenhaHash());
+        }
+
+        return usuarioRepository.save(usuarioExistente);
+    }
 }
